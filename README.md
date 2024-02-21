@@ -10,7 +10,7 @@
 
 ## Preview
 
-![Preview](public/preview.png)
+![Preview](public/preview2.png)
 
 
 ## Tecnologías
