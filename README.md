@@ -2,7 +2,7 @@
     <a href="https://github.com/JheysonJhair/FTcrud_student.git">
       <img src="public/logo.jpg" width="148px" />
     </a>
-    <h1>Crud - Estudiante</h1>
+    <h1>Help</h1>
     <p align="center">
         Frontend Developer Jhair
     </p>
@@ -21,7 +21,7 @@ Este proyecto utiliza las siguientes tecnologías:
 - Bootstrap CSS
 - BACKEND :
 ```bash
-git clone https://github.com/JheysonJhair/BKcrud_student.git
+git clone 
 ```
 
 ## Cómo levantar el proyecto
@@ -29,11 +29,11 @@ git clone https://github.com/JheysonJhair/BKcrud_student.git
 1. Clona el repositorio.
 
 ```bash
-git clone https://github.com/JheysonJhair/FTcrud_student.git
+git clone https://github.com/JheysonJhair/FTproyectBasic.git
 ```
 
 ```bash
-cd FTcrud_student
+cd FTproyectBasic
 ```
 
 2. Instala las dependencias con `npm install`.
