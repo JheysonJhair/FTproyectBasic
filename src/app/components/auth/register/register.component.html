@@ -1,0 +1,139 @@
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="p-4">
+            <div class="text-center mb-2">
+              <div class="text-center">
+                <img
+                  src="/assets/logoprincipal.png"
+                  class="img-fluid"
+                  alt="Font Image"
+                  style="width: 150px"
+                />
+              </div>
+              <p
+                class="mb-0"
+                style="color: #424242; font-weight: bold; font-size: 20px"
+              >
+                Registrate aquí
+              </p>
+            </div>
+            <form class="row g-3">
+              <div class="col-12">
+                <label
+                  for="inputUsername"
+                  class="form-label"
+                  style="color: #424242; font-weight: bold"
+                  >Usuario</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputUsername"
+                  placeholder="Tú nombre"
+                />
+              </div>
+              <div class="col-12">
+                <label
+                  for="inputEmailAddress"
+                  class="form-label"
+                  style="color: #424242; font-weight: bold"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="inputEmailAddress"
+                  placeholder="usuario@gmail.com"
+                />
+              </div>
+              <div class="col-12">
+                <label
+                  for="inputChoosePassword"
+                  class="form-label"
+                  style="color: #424242; font-weight: bold"
+                  >Contraseña</label
+                >
+                <div class="input-group" id="show_hide_password">
+                  <input
+                    type="password"
+                    class="form-control border-end-0"
+                    id="inputChoosePassword"
+                    placeholder="********"
+                  />
+                  <button
+                  class="btn btn-outline-secondary input-group-text"
+                  type="button"
+                  id="togglePassword"
+                  (click)="togglePasswordVisibility()"
+                  style="background-color: #203056;cursor: pointer;"
+                >
+                  <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </button>
+
+                </div>
+              </div>
+              <div class="col-12">
+                <label
+                  for="inputSelectCountry"
+                  class="form-label"
+                  style="color: #424242; font-weight: bold"
+                  >Ciudad</label
+                >
+                <select
+                  class="form-select"
+                  id="inputSelectCountry"
+                  aria-label="Default select example"
+                >
+                  <option selected>Perú</option>
+                  <option value="1">Argentina</option>
+                  <option value="2">Bolivia</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="flexSwitchCheckChecked"
+                    name="rememberMe"
+                    [(ngModel)]="terminate"
+                    style="background-color: #6c63ff; cursor: pointer"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="flexSwitchCheckChecked"
+                    style="cursor: pointer"
+                  >
+                    Recuérdame
+                  </label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="d-grid">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="background-color: #203056; cursor: pointer"
+                  >
+                    Registrar
+                  </button>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="text-center">
+                  <p class="mb-0">
+                    ¿Ya tienes una cuenta?
+                    <a routerLink="/" style="color: #6c63ff">Iniciar sesión</a>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
