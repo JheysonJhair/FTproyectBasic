@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UsersComponent } from './components/home/users/users.component';
+import { DatePipe } from '@angular/common';
 
 
 const routes: Routes =[
@@ -15,6 +16,9 @@ const routes: Routes =[
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    DatePipe
+  ]
 })
 export class AppRoutingModule { }

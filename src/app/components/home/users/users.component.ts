@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +18,7 @@ export class UsersComponent implements OnInit {
 
   registerForm: FormGroup;
   user: User | undefined;
+  dataForm: User | undefined;
 
   showTable: boolean = true;
   showForm: boolean = false;
@@ -27,10 +29,11 @@ export class UsersComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private aRoute: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private datePipe: DatePipe
   ) {
     this.registerForm = this.formLogin.group({
-      email: [
+      mail: [
         '',
         [
           Validators.required,
@@ -57,7 +60,7 @@ export class UsersComponent implements OnInit {
   getAllUsers() {
     this._userService.getListUser().subscribe(
       (data) => {
-        this.listUsers = data.listUsers;
+        this.listUsers = data.listDtoUser;
       },
       (error) => {
         this.toastr.error('Opss ocurrio un error', 'Error');
@@ -85,18 +88,20 @@ export class UsersComponent implements OnInit {
   //---------------------------------------------------------------EDIT - REGISTER
   esEdit() {
     if (this.id !== null) {
+      this.registerUser();
       this.accion = 'EDITAR';
       this._userService.getUserById(this.id).subscribe(
         (data) => {
-          this.user = data;
+          this.user = data.dtoUser;
 
-          this.registerForm.controls['email'].setValue(data[0].email);
-          this.registerForm.controls['dni'].setValue(data[0].dni);
-          this.registerForm.controls['firstName'].setValue(data[0].firstName);
-          this.registerForm.controls['surName'].setValue(data[0].surName);
-          this.registerForm.controls['password'].setValue(data[0].password);
-          this.registerForm.controls['birthDate'].setValue(data[0].birthDate);
-          this.registerForm.controls['gender'].setValue(data[0].gender);
+          const formattedBirthDate = this.datePipe.transform(data.dtoUser.birthDate, 'yyyy-MM-dd');
+          this.registerForm.controls['mail'].setValue(data.dtoUser.mail);
+          this.registerForm.controls['dni'].setValue(data.dtoUser.dni);
+          this.registerForm.controls['firstName'].setValue(data.dtoUser.firstName);
+          this.registerForm.controls['surName'].setValue(data.dtoUser.surName);
+          this.registerForm.controls['password'].setValue(data.dtoUser.password);
+          this.registerForm.controls['birthDate'].setValue(formattedBirthDate);
+          this.registerForm.controls['gender'].setValue(data.dtoUser.gender);
         },
         (error) => {
           console.log(error);
@@ -108,15 +113,14 @@ export class UsersComponent implements OnInit {
   addEditUser() {
     if (this.user == undefined) {
       let userData = {
-        email: this.registerForm.get('email')?.value,
         dni: this.registerForm.get('dni')?.value,
+        mail: this.registerForm.get('mail')?.value,
         firstName: this.registerForm.get('firstName')?.value,
         surName: this.registerForm.get('surName')?.value,
         password: this.registerForm.get('password')?.value,
         birthDate: this.registerForm.get('birthDate')?.value,
-        gender: this.registerForm.get('gender')?.value,
+        gender: this.registerForm.get('gender')?.value === 'true'
       };
-
       this._userService.saveUser(userData).subscribe(
         (data) => {
           this.toastr.success(
@@ -128,15 +132,15 @@ export class UsersComponent implements OnInit {
           this.router.navigate(['dashboard/' + this.id]);
         },
         (error) => {
-          this.toastr.error('Opss ocurrio un error', 'Error');
-          console.log(error);
+          // this.toastr.error('Opss ocurrio un error', 'Error');
+          // console.log(error);
         }
       );
     }
     if (this.id !== null) {
       let formData = new FormData();
       formData.append('idUser', this.id);
-      formData.append('email', this.registerForm.get('email')?.value);
+      formData.append('mail', this.registerForm.get('mail')?.value);
       formData.append('dni', this.registerForm.get('dni')?.value);
       formData.append('firstName', this.registerForm.get('firstName')?.value);
       formData.append('surName', this.registerForm.get('surName')?.value);

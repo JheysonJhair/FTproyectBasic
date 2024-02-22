@@ -27,8 +27,8 @@
                   class="form-label"
                   [ngClass]="{
                     'text-danger':
-                      registerForm.get('email')?.invalid &&
-                      registerForm.get('email')?.touched
+                      registerForm.get('mail')?.invalid &&
+                      registerForm.get('mail')?.touched
                   }"
                   style="font-weight: bold"
                   >Email</label
@@ -38,15 +38,15 @@
                   class="form-control"
                   id="inputEmailAddress"
                   placeholder="usuario@gmail.com"
-                  formControlName="email"
+                  formControlName="mail"
                   [ngClass]="{
                     'is-invalid':
-                      registerForm.get('email')?.invalid &&
-                      registerForm.get('email')?.touched
+                      registerForm.get('mail')?.invalid &&
+                      registerForm.get('mail')?.touched
                   }"
                 />
                 <div
-                  *ngIf="registerForm.get('email')?.invalid"
+                  *ngIf="registerForm.get('mail')?.invalid"
                   class="invalid-feedback"
                 >
                   Formato incorrecto.
@@ -227,13 +227,9 @@
                   style="font-weight: bold"
                   >Sexo</label
                 >
-                <select
-                  class="form-select"
-                  id="inputSelectCountry"
-                  aria-label="Default select example"
-                >
-                  <option selected>Masculino</option>
-                  <option>Femenino</option>
+                <select class="form-select" id="inputSelectGender" formControlName="gender">
+                  <option value=true selected>Masculino</option>
+                  <option value=false>Femenino</option>
                 </select>
               </div>
               <div class="col-12">
@@ -252,7 +248,7 @@
                 <div class="text-center">
                   <p class="mb-0">
                     ¿Ya tienes una cuenta?
-                    <a routerLink="/" style="color: #6c63ff">Iniciar sesión</a>
+                    <a routerLink="/" style="color: #6c63ff" style="text-decoration: none;">Iniciar sesión</a>
                   </p>
                 </div>
               </div>

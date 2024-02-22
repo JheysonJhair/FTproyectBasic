@@ -27,7 +27,7 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {
     this.accessLogin = this.formLogin.group({
-      email: [
+      mail: [
         '',
         [
           Validators.required,
@@ -49,13 +49,13 @@ export class LoginComponent {
   onSubmit() {
     if (this.accessLogin.valid) {
       const login: Login = {
-        email: this.accessLogin.get('email')?.value,
+        mail: this.accessLogin.get('mail')?.value,
         password: this.accessLogin.get('password')?.value,
       };
       console.log('Datos a enviar:', login);
       this.router.navigate(['/dashboard', 12]);
-      // if (login.email?.endsWith('@gmail.com')) {
-      //   this._userService.postLogin(login.email, login.password).subscribe(
+      // if (login.mail?.endsWith('@gmail.com')) {
+      //   this._userService.postLogin(login.mail, login.password).subscribe(
       //     (data) => {
       //       this.getUserById(data.idStudent);
 

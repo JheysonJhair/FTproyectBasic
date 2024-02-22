@@ -1,4 +1,4 @@
 export interface Login{
-  email?:	 		    string,
+  mail?:	 		    string,
   password?:		  string,
 }

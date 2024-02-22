@@ -18,7 +18,7 @@
       >
         USUARIOS REGISTRADOS
       </h3>
-      <div class="table-responsive">
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto; margin-bottom: 16px;">
         <table *ngIf="listUsers.length > 0" class="table">
           <thead class="table-dark">
             <tr>
@@ -35,13 +35,16 @@
               <td>{{ user.dni }}</td>
               <td>{{ user.firstName }}</td>
               <td>{{ user.surName }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.gender }}</td>
+              <td>{{ user.mail }}</td>
+              <td>{{ user.gender ? 'Masculino' : 'Femenino' }}</td>
+
               <td>
                 <button
                   class="btn btn- btn-sm mr-1"
                   style="margin-right: 10px"
-                  [routerLink]="'/dashboard/' + idLogin + '/update/'+user.idUser"
+                  [routerLink]="
+                    '/dashboard/' + idLogin + '/update/' + user.idUser
+                  "
                 >
                   <i class="fas fa-edit" style="color: #6c63ff"></i>
                 </button>
@@ -54,7 +57,9 @@
         </table>
       </div>
       <div *ngIf="listUsers.length == 0" class="row mt-5">
-        <h5 style="color: #0A152F; font-size: 18px;margin-bottom: 20px;">No hay Estudiantes por mostrar.</h5>
+        <h5 style="color: #0a152f; font-size: 18px; margin-bottom: 20px">
+          No hay Estudiantes por mostrar.
+        </h5>
       </div>
       <button class="btn btn-primary btn-block" (click)="registerUser()">
         Registrar Usuario
@@ -65,7 +70,7 @@
         class="mt-4 mb-3"
         style="color: #424242; font-weight: bold; font-size: 24px"
       >
-      {{ accion }} USUARIO
+        {{ accion }} USUARIO
       </h3>
       <form [formGroup]="registerForm" (ngSubmit)="addEditUser()" class="row">
         <div class="col-md-6 mb-2">
@@ -75,8 +80,8 @@
               class="form-label"
               [ngClass]="{
                 'text-danger':
-                  registerForm.get('email')?.invalid &&
-                  registerForm.get('email')?.touched
+                  registerForm.get('mail')?.invalid &&
+                  registerForm.get('mail')?.touched
               }"
               style="font-weight: bold"
               >Email</label
@@ -86,15 +91,15 @@
               class="form-control"
               id="inputEmailAddress"
               placeholder="usuario@gmail.com"
-              formControlName="email"
+              formControlName="mail"
               [ngClass]="{
                 'is-invalid':
-                  registerForm.get('email')?.invalid &&
-                  registerForm.get('email')?.touched
+                  registerForm.get('mail')?.invalid &&
+                  registerForm.get('mail')?.touched
               }"
             />
             <div
-              *ngIf="registerForm.get('email')?.invalid"
+              *ngIf="registerForm.get('mail')?.invalid"
               class="invalid-feedback"
             >
               Formato incorrecto.
@@ -274,20 +279,39 @@
                   ><i class="fas fa-venus-mars" style="margin: 4px"></i
                 ></span>
               </div>
-              <select class="form-control" name="gender" required>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
+              <select class="form-control" formControlName="gender" required>
+                <option value="true">Masculino</option>
+                <option value="false">Femenino</option>
               </select>
             </div>
           </div>
         </div>
         <div class="col-md-12">
-          <button type="submit" class="btn btn-primary mt-2" [disabled]="registerForm.invalid">
+          <button
+            type="submit"
+            class="btn btn-primary mt-2"
+            [disabled]="registerForm.invalid"
+          >
             Guardar Usuario
           </button>
-          <button (click)="reloadPage()"  class="btn mt-2" style="background-color: #6C63FF; margin-left: 10px; color: #fff;" >
-            Cancelar
-          </button>
+
+          <button
+          *ngIf="id === null && idLogin !== null"
+          (click)="reloadPage()"
+          class="btn mt-2"
+          style="background-color: #6c63ff; margin-left: 10px; color: #fff"
+        >
+          Cancelar
+        </button>
+        <button
+          *ngIf="id !== null && idLogin !== null"
+          [routerLink]="'/dashboard/' + idLogin"
+          class="btn mt-2"
+          style="background-color: #6c63ff; margin-left: 10px; color: #fff"
+        >
+          Cancelar
+        </button>
+
         </div>
       </form>
     </div>

@@ -30,7 +30,7 @@ export class RegisterComponent {
     private toastr: ToastrService
   ) {
     this.registerForm = this.formLogin.group({
-      email: [
+      mail: [
         '',
         [
           Validators.required,
@@ -51,13 +51,13 @@ export class RegisterComponent {
     if (this.user == undefined) {
       let userData = {
         dni: this.registerForm.get('dni')?.value,
+        mail: this.registerForm.get('mail')?.value,
         firstName: this.registerForm.get('firstName')?.value,
         surName: this.registerForm.get('surName')?.value,
         password: this.registerForm.get('password')?.value,
         birthDate: this.registerForm.get('birthDate')?.value,
-        gender: this.registerForm.get('gender')?.value,
+        gender: this.registerForm.get('gender')?.value === 'true'
       };
-      console.log(userData);
       this._userService.saveUser(userData).subscribe(
         (data) => {
           this.toastr.success(

@@ -19,23 +19,23 @@
                   class="form-label"
                   [ngClass]="{
                     'text-danger':
-                      accessLogin.get('email')?.invalid &&
-                      accessLogin.get('email')?.touched
+                      accessLogin.get('mail')?.invalid &&
+                      accessLogin.get('mail')?.touched
                   }"
                   style="font-weight: bold"
                 >
                   Email
                 </label>
                 <input
-                  type="email"
+                  type="mail"
                   class="form-control"
                   id="inputEmailAddress"
                   placeholder="usuario@gmail.com"
-                  formControlName="email"
+                  formControlName="mail"
                   [ngClass]="{
                     'is-invalid':
-                      accessLogin.get('email')?.invalid &&
-                      accessLogin.get('email')?.touched
+                      accessLogin.get('mail')?.invalid &&
+                      accessLogin.get('mail')?.touched
                   }"
                 />
 
@@ -127,7 +127,7 @@
               <div class="text-center mt-3">
                 <p class="mb-0">
                   ¿Aún no tienes una cuenta?
-                  <a routerLink="/register" style="color: #6c63ff"
+                  <a routerLink="/register" style="color: #6c63ff" style="text-decoration: none;"
                     >Regístrate aquí</a
                   >
                 </p>
