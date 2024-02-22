@@ -8,15 +8,45 @@
     />
     <div class="d-flex align-items-center">
       <i class="fas fa-bell ml-3 text-light"></i>
-      <a href="/login" class="ml-3 text-light" style="text-decoration: none; margin-right: 10px; margin-left: 12px;">Iniciar sesión</a>
-      <a href="/register" class="text-light" style="text-decoration: none; border: 1px solid #ccc; padding: 5px 10px; border-radius: 5px; margin-right: 15px; margin-left: 10px;">Regístrate</a>
-      <span class="ml-3 text-light" style="margin-right: 15px;">{{user?.firstName}}</span>
-      <img
-        src="https://peru21.pe/resizer/aL10RBgdJtR98uOwE_HwMCdUJKE=/1200x1200/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/HACNXLAQJFETFHFCC5FZJRASEE.jpg"
-        alt="Imagen de perfil"
-        class="rounded-circle"
-        style="width: 40px; height: 40px"
-      />
+      <a
+        href="/login"
+        class="ml-3 text-light"
+        style="text-decoration: none; margin-right: 10px; margin-left: 12px"
+        >Iniciar sesión</a
+      >
+      <a
+        href="/register"
+        class="text-light"
+        style="
+          text-decoration: none;
+          border: 1px solid #ccc;
+          padding: 5px 10px;
+          border-radius: 5px;
+          margin-right: 15px;
+          margin-left: 10px;
+        "
+        >Regístrate</a
+      >
+      <span class="ml-3 text-light" style="margin-right: 15px">{{
+        user?.firstName
+      }}</span>
+      <div class="dropdown" (click)="toggleMenu()">
+        <img
+          src="https://peru21.pe/resizer/aL10RBgdJtR98uOwE_HwMCdUJKE=/1200x1200/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/HACNXLAQJFETFHFCC5FZJRASEE.jpg"
+          alt="Imagen de perfil"
+          class="rounded-circle"
+          style="width: 40px; height: 40px; cursor: pointer"
+        />
+        <div
+          class="dropdown-menu"
+          *ngIf="isMenuOpen"
+          [ngClass]="{ 'dropdown-menu-show': isMenuOpen }"
+        >
+          <a class="dropdown-item" href="/login"
+            ><i class="fas fa-sign-out-alt"></i> Salir</a
+          >
+        </div>
+      </div>
     </div>
   </div>
 </header>

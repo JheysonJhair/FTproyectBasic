@@ -14,7 +14,7 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { UsersComponent } from './components/home/users/users.component';
 import { HeaderComponent } from './components/utils/header/header.component';
 import { FooterComponent } from './components/utils/footer/footer.component';
-
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +31,9 @@ import { FooterComponent } from './components/utils/footer/footer.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    MatMenuModule,
     HttpClientModule,
+
     ToastrModule.forRoot()
   ],
   providers: [],

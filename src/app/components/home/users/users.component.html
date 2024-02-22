@@ -18,7 +18,10 @@
       >
         USUARIOS REGISTRADOS
       </h3>
-      <div class="table-responsive" style="max-height: 400px; overflow-y: auto; margin-bottom: 16px;">
+      <div
+        class="table-responsive"
+        style="max-height: 400px; overflow-y: auto; margin-bottom: 16px"
+      >
         <table *ngIf="listUsers.length > 0" class="table">
           <thead class="table-dark">
             <tr>
@@ -36,7 +39,7 @@
               <td>{{ user.firstName }}</td>
               <td>{{ user.surName }}</td>
               <td>{{ user.mail }}</td>
-              <td>{{ user.gender ? 'Masculino' : 'Femenino' }}</td>
+              <td>{{ user.gender ? "Masculino" : "Femenino" }}</td>
 
               <td>
                 <button
@@ -296,22 +299,21 @@
           </button>
 
           <button
-          *ngIf="id === null && idLogin !== null"
-          (click)="reloadPage()"
-          class="btn mt-2"
-          style="background-color: #6c63ff; margin-left: 10px; color: #fff"
-        >
-          Cancelar
-        </button>
-        <button
-          *ngIf="id !== null && idLogin !== null"
-          [routerLink]="'/dashboard/' + idLogin"
-          class="btn mt-2"
-          style="background-color: #6c63ff; margin-left: 10px; color: #fff"
-        >
-          Cancelar
-        </button>
-
+            *ngIf="id === null && idLogin !== null"
+            (click)="reloadPage()"
+            class="btn mt-2"
+            style="background-color: #6c63ff; margin-left: 10px; color: #fff"
+          >
+            Cancelar
+          </button>
+          <button
+            *ngIf="id !== null && idLogin !== null"
+            [routerLink]="'/dashboard/' + idLogin"
+            class="btn mt-2"
+            style="background-color: #6c63ff; margin-left: 10px; color: #fff"
+          >
+            Cancelar
+          </button>
         </div>
       </form>
     </div>

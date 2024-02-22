@@ -71,6 +71,7 @@ export class UsersComponent implements OnInit {
 
   //----------------------------------------------------------------- DELETE USER
   deleteUser(id: any) {
+    console.log(id)
     this._userService.deleteUser(id).subscribe(
       (data) => {
         this.getAllUsers();
@@ -166,7 +167,7 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  //---------------------------------------------------------------EDIT - REGISTER
+  //--------------------------------------------------------------- EXTRA
 
   registerUser(): void {
     this.showTable = false;

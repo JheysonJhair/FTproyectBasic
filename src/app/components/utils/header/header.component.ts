@@ -11,22 +11,29 @@ import { UserService } from 'src/app/services/user/user.service';
 export class HeaderComponent implements OnInit {
   id: string;
   user: User | undefined;
+
+  isMenuOpen: boolean = false;
+
   constructor(
     private _userService: UserService,
     private aRoute: ActivatedRoute
   ) {
-    this.aRoute.snapshot.paramMap.get('id');
-    this.id = this.aRoute.snapshot.paramMap.get('id')!;
+    this.id = this.aRoute.snapshot.paramMap.get('idLogin')!;
   }
 
   ngOnInit() {
     this.getUserById(this.id);
   }
 
-  // ---------------------------------------------------- GET User
+  // ---------------------------------------------------- GET USER
   getUserById(id: string) {
     this._userService.getUserById(id).subscribe((data) => {
-      this.user = data;
+      this.user = data.dtoUser;
     });
+  }
+
+  // ---------------------------------------------------- EXTRA
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

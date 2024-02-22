@@ -9,8 +9,7 @@ import { User } from 'src/app/interfaces/User';
 })
 export class UserService {
   private myAppUrl = 'https://localhost:7140/';
-  private myUrlLoginMail = 'user/login?mail=';
-  private myUrlLoginPass = '&password=';
+  private myUrlLogin = 'user/login/';
 
   private myUrlGet = 'user/getall/';
   private myApiInsert = 'user/insert/';
@@ -21,10 +20,8 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   //Login
-  postLogin(mail: any, pass: any): Observable<any> {
-    return this.http.get(
-      this.myAppUrl + this.myUrlLoginMail + mail + this.myUrlLoginPass + pass
-    );
+  postLogin(login: any): Observable<any> {
+      return this.http.post(this.myAppUrl + this.myUrlLogin, login);
   }
 
   //Usuarios

@@ -6,3 +6,9 @@
   width: 30px;
   height: 30px;
 }
+.dropdown-menu-show {
+  position: absolute;
+  top: 50px; /* ajusta esta altura según sea necesario */
+  right: 0;
+  display: block;
+}
