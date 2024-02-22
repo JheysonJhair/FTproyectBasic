@@ -21,7 +21,7 @@ export class LoginComponent {
 
   constructor(
     private formLogin: FormBuilder,
-    private _usuarioService: UserService,
+    private _userService: UserService,
     private router: Router,
     private aRoute: ActivatedRoute,
     private toastr: ToastrService
@@ -40,7 +40,7 @@ export class LoginComponent {
 
   // ---------------------------------------------------- GET ADMIN AND STUDENT
   getUserById(id: string) {
-    this._usuarioService.getUserById(id).subscribe((data) => {
+    this._userService.getUserById(id).subscribe((data) => {
       this.login = data;
     });
   }
@@ -55,7 +55,7 @@ export class LoginComponent {
       console.log('Datos a enviar:', login);
       this.router.navigate(['/dashboard', 12]);
       // if (login.email?.endsWith('@gmail.com')) {
-      //   this._usuarioService.postLogin(login.email, login.password).subscribe(
+      //   this._userService.postLogin(login.email, login.password).subscribe(
       //     (data) => {
       //       this.getUserById(data.idStudent);
 

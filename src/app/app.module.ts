@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentComponent } from './components/student/student.component';
-import { HttpClientModule } from '@angular/common/http';  
+import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -19,13 +18,12 @@ import { FooterComponent } from './components/utils/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
-    StudentComponent,
     LoginComponent,
     RegisterComponent,
     UsersComponent,
     HeaderComponent,
     FooterComponent,
-    
+
   ],
   imports: [
     BrowserModule,

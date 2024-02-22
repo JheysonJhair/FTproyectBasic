@@ -19,7 +19,7 @@
         USUARIOS REGISTRADOS
       </h3>
       <div class="table-responsive">
-        <table class="table">
+        <table *ngIf="listUsers.length > 0" class="table">
           <thead class="table-dark">
             <tr>
               <th scope="col">Usuario</th>
@@ -31,27 +31,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of listUsers">
               <td>{{ user.dni }}</td>
-              <td>{{ user.name }}</td>
-              <td>{{ user.lastName }}</td>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.surName }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.gender }}</td>
               <td>
                 <button
                   class="btn btn- btn-sm mr-1"
                   style="margin-right: 10px"
-                  (click)="editUser(user)"
+                  [routerLink]="'/dashboard/' + idLogin + '/update/'+user.idUser"
                 >
                   <i class="fas fa-edit" style="color: #6c63ff"></i>
                 </button>
-                <button class="btn btn-sm" (click)="deleteUser(user)">
+                <button class="btn btn-sm" (click)="deleteUser(user.idUser)">
                   <i class="fas fa-trash-alt" style="color: #cb2027"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <div *ngIf="listUsers.length == 0" class="row mt-5">
+        <h5 style="color: #0A152F; font-size: 18px;margin-bottom: 20px;">No hay Estudiantes por mostrar.</h5>
       </div>
       <button class="btn btn-primary btn-block" (click)="registerUser()">
         Registrar Usuario
@@ -62,108 +65,203 @@
         class="mt-4 mb-3"
         style="color: #424242; font-weight: bold; font-size: 24px"
       >
-        REGISTRAR USUARIO
+      {{ accion }} USUARIO
       </h3>
-      <form (submit)="onSubmit()" class="row">
+      <form [formGroup]="registerForm" (ngSubmit)="addEditUser()" class="row">
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>Email:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-envelope" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="email"
-                class="form-control"
-                [(ngModel)]="newUser.email"
-                name="email"
-                required
-              />
+            <label
+              for="inputEmailAddress"
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('email')?.invalid &&
+                  registerForm.get('email')?.touched
+              }"
+              style="font-weight: bold"
+              >Email</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="inputEmailAddress"
+              placeholder="usuario@gmail.com"
+              formControlName="email"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('email')?.invalid &&
+                  registerForm.get('email')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('email')?.invalid"
+              class="invalid-feedback"
+            >
+              Formato incorrecto.
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>Password:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-lock" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="password"
-                class="form-control"
-                [(ngModel)]="newUser.password"
-                name="password"
-                required
-              />
+            <label
+              for="inputEmailAddress"
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('password')?.invalid &&
+                  registerForm.get('password')?.touched
+              }"
+              style="font-weight: bold"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              class="form-control"
+              id="inputChoosePassword"
+              placeholder="*********"
+              formControlName="password"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('password')?.invalid &&
+                  registerForm.get('password')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('password')?.invalid"
+              class="invalid-feedback"
+            >
+              Campo requerido.
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>Nombre:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="newUser.firstName"
-                name="firstName"
-                required
-              />
+            <label
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('firstName')?.invalid &&
+                  registerForm.get('firstName')?.touched
+              }"
+              style="font-weight: bold"
+              >Nombre</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputFirstName"
+              placeholder="Tu nombre"
+              formControlName="firstName"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('firstName')?.invalid &&
+                  registerForm.get('firstName')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('firstName')?.invalid"
+              class="invalid-feedback"
+            >
+              Formato incorrecto.
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>Apellido:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="newUser.surName"
-                name="surName"
-                required
-              />
+            <label
+              for="inputEmailAddress"
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('surName')?.invalid &&
+                  registerForm.get('surName')?.touched
+              }"
+              style="font-weight: bold"
+              >Apellidos</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputSurName"
+              placeholder="Tus apellidos"
+              formControlName="surName"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('surName')?.invalid &&
+                  registerForm.get('surName')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('surName')?.invalid"
+              class="invalid-feedback"
+            >
+              Formato incorrecto.
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>DNI:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-id-card" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="newUser.dni"
-                name="dni"
-                required
-              />
+            <label
+              for="inputEmailAddress"
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('dni')?.invalid &&
+                  registerForm.get('dni')?.touched
+              }"
+              style="font-weight: bold"
+              >Dni</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputDni"
+              placeholder="7777777"
+              maxlength="8"
+              formControlName="dni"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('dni')?.invalid &&
+                  registerForm.get('dni')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('dni')?.invalid"
+              class="invalid-feedback"
+            >
+              Formato incorrecto.
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="form-group">
-            <label>Fecha de Nacimiento:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-calendar-alt" style="margin: 4px;"></i></span>
-              </div>
-              <input
-                type="date"
-                class="form-control"
-                [(ngModel)]="newUser.birthDate"
-                name="birthDate"
-                required
-              />
+            <label
+              for="inputEmailAddress"
+              class="form-label"
+              [ngClass]="{
+                'text-danger':
+                  registerForm.get('birthDate')?.invalid &&
+                  registerForm.get('birthDate')?.touched
+              }"
+              style="font-weight: bold"
+              >Fecha de nacimiento</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="inputBirthDate"
+              formControlName="birthDate"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('birthDate')?.invalid &&
+                  registerForm.get('birthDate')?.touched
+              }"
+            />
+            <div
+              *ngIf="registerForm.get('birthDate')?.invalid"
+              class="invalid-feedback"
+            >
+              Campo requerido.
             </div>
           </div>
         </div>
@@ -172,14 +270,11 @@
             <label>Género:</label>
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-venus-mars" style="margin: 4px;"></i></span>
+                <span class="input-group-text"
+                  ><i class="fas fa-venus-mars" style="margin: 4px"></i
+                ></span>
               </div>
-              <select
-                class="form-control"
-                [(ngModel)]="newUser.gender"
-                name="gender"
-                required
-              >
+              <select class="form-control" name="gender" required>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
               </select>
@@ -187,10 +282,14 @@
           </div>
         </div>
         <div class="col-md-12">
-          <button type="submit" class="btn btn-primary  mt-2">Guardar Usuario</button>
+          <button type="submit" class="btn btn-primary mt-2" [disabled]="registerForm.invalid">
+            Guardar Usuario
+          </button>
+          <button (click)="reloadPage()"  class="btn mt-2" style="background-color: #6C63FF; margin-left: 10px; color: #fff;" >
+            Cancelar
+          </button>
         </div>
       </form>
-
     </div>
   </div>
 </div>

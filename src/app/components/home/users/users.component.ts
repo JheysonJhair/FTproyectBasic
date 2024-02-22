@@ -1,62 +1,175 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/interfaces/User';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.css'],
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
+  accion = 'REGISTRAR';
+  idLogin: string;
+  id: string;
+
+  registerForm: FormGroup;
+  user: User | undefined;
+
   showTable: boolean = true;
   showForm: boolean = false;
-  constructor( private toastr: ToastrService){};
-  newUser: any = { // Nuevo objeto para representar un usuario en el formulario
-    email: '',
-    password: '',
-    firstName: '',
-    surName: '',
-    dni: '',
-    birthDate: null,
-    gender: false
-  };
-  users: any[] = [
-    { id: 1, dni: '77777777', name: 'jheyson jhair', lastName: 'Arone Angeles',email:'jhair@gmail.com',gender:"M" },
-    { id: 2, dni: '77777777', name: 'rubi floerelia', lastName: 'damian ochoa',email:'rbi@gmail.com',gender:"M" },
-    { id: 3, dni: '77777777', name: 'ed nativido', lastName: 'soto huamanhorcco',email:'ed@gmail.com',gender:"M" },
-    { id: 4, dni: '77777777', name: 'otro otro', lastName: 'otro otro',email:'otro@gmail.com',gender:"M" },
-    { id: 5, dni: '77777777', name: 'otro2 otr2', lastName: 'otro2 otro2',email:'otro2@gmail.com',gender:"M" },
-    { id: 6, dni: '77777777', name: 'otro otro', lastName: 'otro otro',email:'otro@gmail.com',gender:"M" },
-    { id: 7, dni: '77777777', name: 'otro2 otr2', lastName: 'otro2 otro2',email:'otro2@gmail.com',gender:"M" },
-  ];
 
-  deleteUser(user: any): void {
-    const index = this.users.indexOf(user);
-    if (index !== -1) {
-      this.users.splice(index, 1);
+  listUsers: User[] = [];
+  constructor(
+    private formLogin: FormBuilder,
+    private _userService: UserService,
+    private router: Router,
+    private aRoute: ActivatedRoute,
+    private toastr: ToastrService
+  ) {
+    this.registerForm = this.formLogin.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/),
+        ],
+      ],
+      dni: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
+      firstName: ['', [Validators.required, Validators.maxLength(70)]],
+      surName: ['', [Validators.required, Validators.maxLength(40)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      birthDate: ['', Validators.required],
+      gender: [true, Validators.required],
+    });
+    this.idLogin = this.aRoute.snapshot.paramMap.get('idLogin')!;
+    this.id = this.aRoute.snapshot.paramMap.get('id')!;
+  }
+
+  ngOnInit(): void {
+    this.getAllUsers();
+    this.esEdit();
+  }
+
+  //----------------------------------------------------------------- GET USERS
+  getAllUsers() {
+    this._userService.getListUser().subscribe(
+      (data) => {
+        this.listUsers = data.listUsers;
+      },
+      (error) => {
+        this.toastr.error('Opss ocurrio un error', 'Error');
+        console.log(error);
+      }
+    );
+  }
+
+  //----------------------------------------------------------------- DELETE USER
+  deleteUser(id: any) {
+    this._userService.deleteUser(id).subscribe(
+      (data) => {
+        this.getAllUsers();
+        this.toastr.error(
+          'El usuarios fue eliminado con exito',
+          'Registro eliminado!'
+        );
+      },
+      (error) => {
+        this.toastr.error('Opss ocurrio un error', 'Error');
+        console.log(error);
+      }
+    );
+  }
+  //---------------------------------------------------------------EDIT - REGISTER
+  esEdit() {
+    if (this.id !== null) {
+      this.accion = 'EDITAR';
+      this._userService.getUserById(this.id).subscribe(
+        (data) => {
+          this.user = data;
+
+          this.registerForm.controls['email'].setValue(data[0].email);
+          this.registerForm.controls['dni'].setValue(data[0].dni);
+          this.registerForm.controls['firstName'].setValue(data[0].firstName);
+          this.registerForm.controls['surName'].setValue(data[0].surName);
+          this.registerForm.controls['password'].setValue(data[0].password);
+          this.registerForm.controls['birthDate'].setValue(data[0].birthDate);
+          this.registerForm.controls['gender'].setValue(data[0].gender);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
   }
-  viewUser(user: any): void {
-    const index = this.users.indexOf(user);
-    if (index !== -1) {
-      this.users.splice(index, 1);
+
+  addEditUser() {
+    if (this.user == undefined) {
+      let userData = {
+        email: this.registerForm.get('email')?.value,
+        dni: this.registerForm.get('dni')?.value,
+        firstName: this.registerForm.get('firstName')?.value,
+        surName: this.registerForm.get('surName')?.value,
+        password: this.registerForm.get('password')?.value,
+        birthDate: this.registerForm.get('birthDate')?.value,
+        gender: this.registerForm.get('gender')?.value,
+      };
+
+      this._userService.saveUser(userData).subscribe(
+        (data) => {
+          this.toastr.success(
+            'El usuario fue registrado con exito',
+            'Registro completo!'
+          );
+          this.showTable = true;
+          this.showForm = false;
+          this.router.navigate(['dashboard/' + this.id]);
+        },
+        (error) => {
+          this.toastr.error('Opss ocurrio un error', 'Error');
+          console.log(error);
+        }
+      );
+    }
+    if (this.id !== null) {
+      let formData = new FormData();
+      formData.append('idUser', this.id);
+      formData.append('email', this.registerForm.get('email')?.value);
+      formData.append('dni', this.registerForm.get('dni')?.value);
+      formData.append('firstName', this.registerForm.get('firstName')?.value);
+      formData.append('surName', this.registerForm.get('surName')?.value);
+      formData.append('password', this.registerForm.get('password')?.value);
+      formData.append('birthDate', this.registerForm.get('birthDate')?.value);
+      formData.append('gender', this.registerForm.get('gender')?.value);
+
+      this._userService.updateUser(formData).subscribe(
+        (data) => {
+          this.toastr.info(
+            'El estudiante fue actualizado con exito',
+            'Estudiante actualizado!'
+          );
+          this.showTable = true;
+          this.showForm = false;
+          this.router.navigate(['dashboard/' + this.id]);
+        },
+        (error) => {
+          this.toastr.error('Opss ocurrio un error', 'Error');
+          console.log(error);
+        }
+      );
     }
   }
-  editUser(user: any): void {
-    const index = this.users.indexOf(user);
-    if (index !== -1) {
-      this.users.splice(index, 1);
-    }
-  }
+
+  //---------------------------------------------------------------EDIT - REGISTER
+
   registerUser(): void {
     this.showTable = false;
     this.showForm = true;
-    this.toastr.success('Registro completo!', 'Estudiante Registrado');
   }
-  onSubmit(): void {
 
-    console.log('Nuevo usuario registrado:', this.newUser);
-    this.showTable = true;
-    this.showForm = false;
-
+  reloadPage(): void {
+    window.location.reload();
   }
 }

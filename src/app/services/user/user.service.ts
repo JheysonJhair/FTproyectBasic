@@ -44,7 +44,7 @@ export class UserService {
   });
   return this.http.get(this.myAppUrl + this.myUrlGetId + id, { headers });
   }
-  updateStudent(dtoStudent: FormData ): Observable<any>{
-    return this.http.post(this.myAppUrl + this.myUrlPut, dtoStudent);
+  updateUser(user: FormData ): Observable<any>{
+    return this.http.post(this.myAppUrl + this.myUrlPut, user);
   }
 }

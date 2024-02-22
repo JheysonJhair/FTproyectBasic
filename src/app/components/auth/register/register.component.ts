@@ -6,7 +6,7 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/interfaces/User';
 import { UserService } from 'src/app/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -25,9 +25,8 @@ export class RegisterComponent {
 
   constructor(
     private formLogin: FormBuilder,
-    private _usuarioService: UserService,
+    private _userService: UserService,
     private router: Router,
-    private aRoute: ActivatedRoute,
     private toastr: ToastrService
   ) {
     this.registerForm = this.formLogin.group({
@@ -59,7 +58,7 @@ export class RegisterComponent {
         gender: this.registerForm.get('gender')?.value,
       };
       console.log(userData);
-      this._usuarioService.saveUser(userData).subscribe(
+      this._userService.saveUser(userData).subscribe(
         (data) => {
           this.toastr.success(
             'El usuario fue registrado con exito',
