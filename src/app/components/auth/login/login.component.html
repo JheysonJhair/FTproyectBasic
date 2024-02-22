@@ -12,49 +12,85 @@
                 style="width: 150px"
               />
             </div>
-            <form (ngSubmit)="onSubmit()">
+            <form [formGroup]="accessLogin" (ngSubmit)="onSubmit()">
               <div class="mb-3">
                 <label
                   for="inputEmailAddress"
                   class="form-label"
-                  style="color: #424242; font-weight: bold"
-                  >Email</label
+                  [ngClass]="{
+                    'text-danger':
+                      accessLogin.get('email')?.invalid &&
+                      accessLogin.get('email')?.touched
+                  }"
+                  style="font-weight: bold"
                 >
+                  Email
+                </label>
                 <input
                   type="email"
                   class="form-control"
                   id="inputEmailAddress"
                   placeholder="usuario@gmail.com"
-                  [(ngModel)]="email"
-                  [ngModelOptions]="{ standalone: true }"
+                  formControlName="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      accessLogin.get('email')?.invalid &&
+                      accessLogin.get('email')?.touched
+                  }"
                 />
+
+                <div
+                  *ngIf="accessLogin.get('email')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Formato incorrecto. Ejemplo: any@gmail.com
+                </div>
               </div>
+
               <div class="mb-3">
                 <label
                   for="inputChoosePassword"
                   class="form-label"
-                  style="color: #424242; font-weight: bold"
-                  >Contraseña</label
+                  [ngClass]="{
+                    'text-danger':
+                      accessLogin.get('password')?.invalid &&
+                      accessLogin.get('password')?.touched
+                  }"
+                  style="font-weight: bold"
                 >
+                  Contraseña
+                </label>
                 <div class="input-group" id="show_hide_password">
                   <input
                     type="password"
                     class="form-control border-end-0"
                     id="inputChoosePassword"
                     placeholder="*********"
-                    name="password"
-                    [(ngModel)]="password"
+                    formControlName="password"
+                    [ngClass]="{
+                      'is-invalid':
+                        accessLogin.get('password')?.invalid &&
+                        accessLogin.get('password')?.touched
+                    }"
                   />
                   <button
-                  class="btn btn-outline-secondary input-group-text"
-                  type="button"
-                  id="togglePassword"
-                  (click)="togglePasswordVisibility()"
-                  style="background-color: #203056;cursor: pointer;"
+                    class="btn btn-outline-secondary input-group-text"
+                    type="button"
+                    id="togglePassword"
+                    (click)="togglePasswordVisibility()"
+                    style="background-color: #203056; cursor: pointer"
+                  >
+                    <i
+                      class="fas"
+                      [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="accessLogin.get('password')?.invalid"
+                  class="invalid-feedback"
                 >
-                  <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-                </button>
-
+                  Formato incorrecto.
                 </div>
               </div>
               <div class="row mb-3">
@@ -65,8 +101,8 @@
                       type="checkbox"
                       id="flexSwitchCheckChecked"
                       name="rememberMe"
-                      [(ngModel)]="rememberMe"
                       style="background-color: #6c63ff; cursor: pointer"
+                      checked
                     />
                     <label
                       class="form-check-label"
@@ -83,6 +119,7 @@
                   type="submit"
                   class="btn text-white"
                   style="background-color: #203056; cursor: pointer"
+                  [disabled]="accessLogin.invalid"
                 >
                   Iniciar sesión
                 </button>

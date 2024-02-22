@@ -1,39 +1,86 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { Login } from 'src/app/interfaces/Login';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  email: string = 'usuario@gmail.com';
-  password: string = 'contraseña';
+  public static token: string;
+  accessLogin: FormGroup;
+  login: Login | undefined;
+
   rememberMe: boolean = true;
   hidePassword: boolean = true;
-  constructor(private router: Router) {}
 
+  constructor(
+    private formLogin: FormBuilder,
+    private _usuarioService: UserService,
+    private router: Router,
+    private aRoute: ActivatedRoute,
+    private toastr: ToastrService
+  ) {
+    this.accessLogin = this.formLogin.group({
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/),
+        ],
+      ],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+  }
+
+  // ---------------------------------------------------- GET ADMIN AND STUDENT
+  getUserById(id: string) {
+    this._usuarioService.getUserById(id).subscribe((data) => {
+      this.login = data;
+    });
+  }
+
+  // ---------------------------------------------------- ACCESS
   onSubmit() {
-    console.log('Email:', this.email);
-    console.log('Contraseña:', this.password);
-    console.log('Recuérdame:', this.rememberMe);
+    if (this.accessLogin.valid) {
+      const login: Login = {
+        email: this.accessLogin.get('email')?.value,
+        password: this.accessLogin.get('password')?.value,
+      };
+      console.log('Datos a enviar:', login);
+      this.router.navigate(['/dashboard', 12]);
+      // if (login.email?.endsWith('@gmail.com')) {
+      //   this._usuarioService.postLogin(login.email, login.password).subscribe(
+      //     (data) => {
+      //       this.getUserById(data.idStudent);
 
-    if (this.email === 'usuario@gmail.com' && this.password === 'contraseña') {
-      this.router.navigate(['/dashboard']);
-    } else {
-      console.log('Credenciales incorrectas');
+      //       LoginComponent.token = data.token;
+      //       this.toastr.success('Bienvenido!', 'Acceso!');
+      //       this.router.navigate(['/dashboard', data.id]);
+      //     },
+      //     (error) => {
+      //       this.toastr.error('Create una cuenta!', 'Error');
+      //       console.log(error);
+      //     }
+      //   );
+      // }
     }
   }
 
-
+  // ---------------------------------------------------- VER O NO PASSWORD
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
     const passwordField = document.getElementById('inputChoosePassword');
     if (passwordField) {
-      passwordField.setAttribute('type', this.hidePassword ? 'password' : 'text');
+      passwordField.setAttribute(
+        'type',
+        this.hidePassword ? 'password' : 'text'
+      );
     }
   }
 }

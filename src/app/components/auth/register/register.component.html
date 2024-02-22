@@ -1,6 +1,6 @@
 <div class="container vh-100 d-flex justify-content-center align-items-center">
   <div class="row justify-content-center">
-    <div class="col-md-5">
+    <div class="col-md-8">
       <div class="card">
         <div class="card-body">
           <div class="p-4">
@@ -17,29 +17,20 @@
                 class="mb-0"
                 style="color: #424242; font-weight: bold; font-size: 20px"
               >
-                Registrate aquí
+                Regístrate aquí
               </p>
             </div>
-            <form class="row g-3">
-              <div class="col-12">
-                <label
-                  for="inputUsername"
-                  class="form-label"
-                  style="color: #424242; font-weight: bold"
-                  >Usuario</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="inputUsername"
-                  placeholder="Tú nombre"
-                />
-              </div>
-              <div class="col-12">
+            <form  class="row g-3" [formGroup]="registerForm" (ngSubmit)="addUser()" >
+              <div class="col-md-6">
                 <label
                   for="inputEmailAddress"
                   class="form-label"
-                  style="color: #424242; font-weight: bold"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('email')?.invalid &&
+                      registerForm.get('email')?.touched
+                  }"
+                  style="font-weight: bold"
                   >Email</label
                 >
                 <input
@@ -47,13 +38,153 @@
                   class="form-control"
                   id="inputEmailAddress"
                   placeholder="usuario@gmail.com"
+                  formControlName="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('email')?.invalid &&
+                      registerForm.get('email')?.touched
+                  }"
                 />
+                <div
+                  *ngIf="registerForm.get('email')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Formato incorrecto.
+                </div>
               </div>
-              <div class="col-12">
+              <div class="col-md-6">
                 <label
-                  for="inputChoosePassword"
                   class="form-label"
-                  style="color: #424242; font-weight: bold"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('firstName')?.invalid &&
+                      registerForm.get('firstName')?.touched
+                  }"
+                  style="font-weight: bold"
+                  >Nombre</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputFirstName"
+                  placeholder="Tu nombre"
+                  formControlName="firstName"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('firstName')?.invalid &&
+                      registerForm.get('firstName')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="registerForm.get('firstName')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Formato incorrecto.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label
+                  for="inputEmailAddress"
+                  class="form-label"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('surName')?.invalid &&
+                      registerForm.get('surName')?.touched
+                  }"
+                  style="font-weight: bold"
+                  >Apellidos</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputSurName"
+                  placeholder="Tus apellidos"
+                  formControlName="surName"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('surName')?.invalid &&
+                      registerForm.get('surName')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="registerForm.get('surName')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Formato incorrecto.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label
+                  for="inputEmailAddress"
+                  class="form-label"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('birthDate')?.invalid &&
+                      registerForm.get('birthDate')?.touched
+                  }"
+                  style="font-weight: bold"
+                  >Fecha de nacimiento</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="inputBirthDate"
+                  formControlName="birthDate"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('birthDate')?.invalid &&
+                      registerForm.get('birthDate')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="registerForm.get('birthDate')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Campo requerido.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label
+                  for="inputEmailAddress"
+                  class="form-label"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('dni')?.invalid &&
+                      registerForm.get('dni')?.touched
+                  }"
+                  style="font-weight: bold"
+                  >Dni</label
+                >
+                <input
+                type="text"
+                class="form-control"
+                id="inputDni"
+                placeholder="7777777"
+                maxlength="8"
+                formControlName="dni"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('dni')?.invalid &&
+                    registerForm.get('dni')?.touched
+                }"
+              />
+                <div
+                  *ngIf="registerForm.get('dni')?.invalid"
+                  class="invalid-feedback"
+                >
+                  Formato incorrecto.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label
+                  for="inputEmailAddress"
+                  class="form-label"
+                  [ngClass]="{
+                    'text-danger':
+                      registerForm.get('password')?.invalid &&
+                      registerForm.get('password')?.touched
+                  }"
+                  style="font-weight: bold"
                   >Contraseña</label
                 >
                 <div class="input-group" id="show_hide_password">
@@ -61,65 +192,60 @@
                     type="password"
                     class="form-control border-end-0"
                     id="inputChoosePassword"
-                    placeholder="********"
+                    placeholder="*********"
+                    formControlName="password"
+                    [ngClass]="{
+                      'is-invalid':
+                        registerForm.get('password')?.invalid &&
+                        registerForm.get('password')?.touched
+                    }"
                   />
                   <button
-                  class="btn btn-outline-secondary input-group-text"
-                  type="button"
-                  id="togglePassword"
-                  (click)="togglePasswordVisibility()"
-                  style="background-color: #203056;cursor: pointer;"
+                    class="btn btn-outline-secondary input-group-text"
+                    type="button"
+                    id="togglePassword"
+                    (click)="togglePasswordVisibility()"
+                    style="background-color: #203056; cursor: pointer"
+                  >
+                    <i
+                      class="fas"
+                      [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="registerForm.get('password')?.invalid"
+                  class="invalid-feedback"
                 >
-                  <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-                </button>
-
+                  Campo requerido.
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-md-6">
                 <label
                   for="inputSelectCountry"
                   class="form-label"
-                  style="color: #424242; font-weight: bold"
-                  >Ciudad</label
+                  style="font-weight: bold"
+                  >Sexo</label
                 >
                 <select
                   class="form-select"
                   id="inputSelectCountry"
                   aria-label="Default select example"
                 >
-                  <option selected>Perú</option>
-                  <option value="1">Argentina</option>
-                  <option value="2">Bolivia</option>
+                  <option selected>Masculino</option>
+                  <option>Femenino</option>
                 </select>
-              </div>
-              <div class="col-12">
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="flexSwitchCheckChecked"
-                    name="rememberMe"
-                    [(ngModel)]="terminate"
-                    style="background-color: #6c63ff; cursor: pointer"
-                  />
-                  <label
-                    class="form-check-label"
-                    for="flexSwitchCheckChecked"
-                    style="cursor: pointer"
-                  >
-                    Recuérdame
-                  </label>
-                </div>
               </div>
               <div class="col-12">
                 <div class="d-grid">
                   <button
-                    type="submit"
-                    class="btn btn-primary"
-                    style="background-color: #203056; cursor: pointer"
-                  >
-                    Registrar
-                  </button>
+                  type="submit"
+                  class="btn text-white"
+                  style="background-color: #203056; cursor: pointer"
+                  [disabled]="registerForm.invalid"
+                >
+                  Registrar
+                </button>
                 </div>
               </div>
               <div class="col-12">
