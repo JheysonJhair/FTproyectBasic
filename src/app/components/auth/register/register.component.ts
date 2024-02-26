@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/User';
 import { UserService } from 'src/app/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -60,14 +59,28 @@ export class RegisterComponent {
       };
       this._userService.saveUser(userData).subscribe(
         (data) => {
-          if (data.success == true) {
-            this.toastr.success(
-              'El usuario fue registrado con exito',
-              'Registro completo!'
+          if (data.message == 'Ya existe un usuario creado con ese correo') {
+            this.toastr.error(
+              'Ya existe un usuario creado con ese correo',
+              'Error'
             );
-            this.router.navigate(['login/']);
-          }else{
-            this.toastr.error('Opss ocurrio un error', 'Error');
+          } else if (
+            data.message == 'Ya existe un usuario creado con ese dni'
+          ) {
+            this.toastr.error(
+              'Ya existe un usuario creado con ese dni',
+              'Error'
+            );
+          } else {
+            if (data.success == true) {
+              this.toastr.success(
+                'El usuario fue registrado con exito',
+                'Registro completo!'
+              );
+              this.router.navigate(['login/']);
+            } else {
+              this.toastr.error('Opss ocurrio un error', 'Error');
+            }
           }
         },
         (error) => {

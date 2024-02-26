@@ -15,7 +15,12 @@
               </div>
               <p
                 class="mb-3"
-                style="color: #424242; font-weight: bold; font-size: 20px;text-align: left;"
+                style="
+                  color: #424242;
+                  font-weight: bold;
+                  font-size: 20px;
+                  text-align: left;
+                "
               >
                 Regístrate aquí
               </p>
@@ -53,7 +58,7 @@
                   *ngIf="registerForm.get('mail')?.invalid"
                   class="invalid-feedback"
                 >
-                  Formato incorrecto.
+                  Formato incorrecto. Ejemplo: any@gmail.com
                 </div>
               </div>
               <div class="col-md-6">
@@ -83,7 +88,7 @@
                   *ngIf="registerForm.get('firstName')?.invalid"
                   class="invalid-feedback"
                 >
-                  Formato incorrecto.
+                  Campo requerido.
                 </div>
               </div>
               <div class="col-md-6">
@@ -114,7 +119,7 @@
                   *ngIf="registerForm.get('surName')?.invalid"
                   class="invalid-feedback"
                 >
-                  Formato incorrecto.
+                  Campo requerido.
                 </div>
               </div>
               <div class="col-md-6">
@@ -204,6 +209,7 @@
                         registerForm.get('password')?.touched
                     }"
                   />
+
                   <button
                     class="btn btn-outline-secondary input-group-text"
                     type="button"
@@ -216,7 +222,14 @@
                       [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"
                     ></i>
                   </button>
+                  <div
+                    *ngIf="registerForm.get('password')?.invalid"
+                    class="invalid-feedback"
+                  >
+                    La contraseña debe ser mayor a 7.
+                  </div>
                 </div>
+
                 <div
                   *ngIf="registerForm.get('password')?.invalid"
                   class="invalid-feedback"

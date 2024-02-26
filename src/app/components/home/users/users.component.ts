@@ -110,9 +110,7 @@ export class UsersComponent implements OnInit {
             data.value.firstName
           );
           this.registerForm.controls['surName'].setValue(data.value.surName);
-          this.registerForm.controls['password'].setValue(
-            data.value.password
-          );
+          this.registerForm.controls['password'].setValue('');
           this.registerForm.controls['birthDate'].setValue(formattedBirthDate);
           this.registerForm.controls['gender'].setValue(data.value.gender);
         },
@@ -136,17 +134,31 @@ export class UsersComponent implements OnInit {
       };
       this._userService.saveUser(userData).subscribe(
         (data) => {
-          if (data.success == true) {
-            this.toastr.success(
-              'El usuario fue registrado con exito',
-              'Registro completo!'
+          if (data.message == 'Ya existe un usuario creado con ese correo') {
+            this.toastr.error(
+              'Ya existe un usuario creado con ese correo',
+              'Error'
             );
-            this.showTable = true;
-            this.showForm = false;
-            this.router.navigate(['dashboard/' + this.idLogin]);
-            this.getAllUsers();
+          } else if (
+            data.message == 'Ya existe un usuario creado con ese dni'
+          ) {
+            this.toastr.error(
+              'Ya existe un usuario creado con ese dni',
+              'Error'
+            );
           } else {
-            this.toastr.error('Opss ocurrio un error', 'Error');
+            if (data.success == true) {
+              this.toastr.success(
+                'El usuario fue registrado con exito',
+                'Registro completo!'
+              );
+              this.showTable = true;
+              this.showForm = false;
+              this.router.navigate(['dashboard/' + this.idLogin]);
+              this.getAllUsers();
+            } else {
+              this.toastr.error('Opss ocurrio un error', 'Error');
+            }
           }
         },
         (error) => {
@@ -156,7 +168,6 @@ export class UsersComponent implements OnInit {
       );
     }
     if (this.id !== null) {
-      console.log(this.id);
       let newUserData = {
         idUser: this.id,
         mail: this.registerForm.get('mail')?.value,
@@ -170,7 +181,6 @@ export class UsersComponent implements OnInit {
 
       this._userService.updateUser(newUserData).subscribe(
         (data) => {
-          console.log(data)
           if (data.success == true) {
             this.toastr.info(
               'El usuario fue actualizado con exito',

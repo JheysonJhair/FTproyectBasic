@@ -56,8 +56,11 @@ export class LoginComponent {
 
               this.toastr.success('¡Bienvenido!', 'Acceso');
               this.router.navigate(['/dashboard', userId]);
-            }else{
-              this.toastr.error('Crea una cuenta, es muy fácil', 'No permitido!');
+            } else {
+              this.toastr.error(
+                'Crea una cuenta, es muy fácil',
+                'No permitido!'
+              );
             }
           },
           (error) => {
