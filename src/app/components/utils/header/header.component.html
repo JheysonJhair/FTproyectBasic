@@ -4,7 +4,7 @@
       src="/assets/logo.png"
       class="img-fluid"
       alt="Font Image"
-      style="max-width: 120px"
+      style="max-width: 180px"
     />
     <div class="d-flex align-items-center">
       <i class="fas fa-bell ml-3 text-light"></i>
@@ -27,15 +27,18 @@
         "
         >Regístrate</a
       >
-      <span class="ml-3 text-light" style="margin-right: 15px">{{
-        user?.firstName
-      }}</span>
+      <span class="ml-3 text-light" style="margin-right: 15px;">
+        {{
+          (user?.firstName || '').toUpperCase()
+        }}
+      </span>
+
       <div class="dropdown" (click)="toggleMenu()">
         <img
-          src="https://peru21.pe/resizer/aL10RBgdJtR98uOwE_HwMCdUJKE=/1200x1200/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/HACNXLAQJFETFHFCC5FZJRASEE.jpg"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWQwyQCGHG-y_XKTQTdiZkvLhbEpLsidkJg97LaR57DvgWsi1U6IWAzhrjzNEh9jpIvZE"
           alt="Imagen de perfil"
           class="rounded-circle"
-          style="width: 40px; height: 40px; cursor: pointer"
+          style="width: 35px; height: 34px; cursor: pointer"
         />
         <div
           class="dropdown-menu"
