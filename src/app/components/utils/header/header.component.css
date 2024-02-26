@@ -8,7 +8,7 @@
 }
 .dropdown-menu-show {
   position: absolute;
-  top: 50px; /* ajusta esta altura según sea necesario */
+  top: 50px;
   right: 0;
   display: block;
 }

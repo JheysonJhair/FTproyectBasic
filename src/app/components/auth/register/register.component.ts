@@ -56,15 +56,19 @@ export class RegisterComponent {
         surName: this.registerForm.get('surName')?.value,
         password: this.registerForm.get('password')?.value,
         birthDate: this.registerForm.get('birthDate')?.value,
-        gender: this.registerForm.get('gender')?.value === 'true'
+        gender: this.registerForm.get('gender')?.value === 'true',
       };
       this._userService.saveUser(userData).subscribe(
         (data) => {
-          this.toastr.success(
-            'El usuario fue registrado con exito',
-            'Registro completo!'
-          );
-          this.router.navigate(['login/']);
+          if (data.success == true) {
+            this.toastr.success(
+              'El usuario fue registrado con exito',
+              'Registro completo!'
+            );
+            this.router.navigate(['login/']);
+          }else{
+            this.toastr.error('Opss ocurrio un error', 'Error');
+          }
         },
         (error) => {
           this.toastr.error('Opss ocurrio un error', 'Error');

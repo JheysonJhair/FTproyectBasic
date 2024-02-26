@@ -52,6 +52,8 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    console.log('Token guardado en localStorage:', token);
     this.getAllUsers();
     this.esEdit();
   }
@@ -60,7 +62,7 @@ export class UsersComponent implements OnInit {
   getAllUsers() {
     this._userService.getListUser().subscribe(
       (data) => {
-        this.listUsers = data.listDtoUser;
+        this.listUsers = data.value;
       },
       (error) => {
         this.toastr.error('Opss ocurrio un error', 'Error');
@@ -71,14 +73,17 @@ export class UsersComponent implements OnInit {
 
   //----------------------------------------------------------------- DELETE USER
   deleteUser(id: any) {
-    console.log(id)
     this._userService.deleteUser(id).subscribe(
       (data) => {
-        this.getAllUsers();
-        this.toastr.error(
-          'El usuarios fue eliminado con exito',
-          'Registro eliminado!'
-        );
+        if (data.success == true) {
+          this.getAllUsers();
+          this.toastr.error(
+            'El usuarios fue eliminado con exito',
+            'Registro eliminado!'
+          );
+        } else {
+          this.toastr.error('Opss ocurrio un error', 'Error');
+        }
       },
       (error) => {
         this.toastr.error('Opss ocurrio un error', 'Error');
@@ -93,16 +98,23 @@ export class UsersComponent implements OnInit {
       this.accion = 'EDITAR';
       this._userService.getUserById(this.id).subscribe(
         (data) => {
-          this.user = data.dtoUser;
+          this.user = data.value;
 
-          const formattedBirthDate = this.datePipe.transform(data.dtoUser.birthDate, 'yyyy-MM-dd');
-          this.registerForm.controls['mail'].setValue(data.dtoUser.mail);
-          this.registerForm.controls['dni'].setValue(data.dtoUser.dni);
-          this.registerForm.controls['firstName'].setValue(data.dtoUser.firstName);
-          this.registerForm.controls['surName'].setValue(data.dtoUser.surName);
-          this.registerForm.controls['password'].setValue(data.dtoUser.password);
+          const formattedBirthDate = this.datePipe.transform(
+            data.value.birthDate,
+            'yyyy-MM-dd'
+          );
+          this.registerForm.controls['mail'].setValue(data.value.mail);
+          this.registerForm.controls['dni'].setValue(data.value.dni);
+          this.registerForm.controls['firstName'].setValue(
+            data.value.firstName
+          );
+          this.registerForm.controls['surName'].setValue(data.value.surName);
+          this.registerForm.controls['password'].setValue(
+            data.value.password
+          );
           this.registerForm.controls['birthDate'].setValue(formattedBirthDate);
-          this.registerForm.controls['gender'].setValue(data.dtoUser.gender);
+          this.registerForm.controls['gender'].setValue(data.value.gender);
         },
         (error) => {
           console.log(error);
@@ -120,44 +132,56 @@ export class UsersComponent implements OnInit {
         surName: this.registerForm.get('surName')?.value,
         password: this.registerForm.get('password')?.value,
         birthDate: this.registerForm.get('birthDate')?.value,
-        gender: this.registerForm.get('gender')?.value === 'true'
+        gender: this.registerForm.get('gender')?.value === 'true',
       };
       this._userService.saveUser(userData).subscribe(
         (data) => {
-          this.toastr.success(
-            'El usuario fue registrado con exito',
-            'Registro completo!'
-          );
-          this.showTable = true;
-          this.showForm = false;
-          this.router.navigate(['dashboard/' + this.id]);
+          if (data.success == true) {
+            this.toastr.success(
+              'El usuario fue registrado con exito',
+              'Registro completo!'
+            );
+            this.showTable = true;
+            this.showForm = false;
+            this.router.navigate(['dashboard/' + this.idLogin]);
+            this.getAllUsers();
+          } else {
+            this.toastr.error('Opss ocurrio un error', 'Error');
+          }
         },
         (error) => {
-          // this.toastr.error('Opss ocurrio un error', 'Error');
-          // console.log(error);
+          this.toastr.error('Opss ocurrio un error', 'Error');
+          console.log(error);
         }
       );
     }
     if (this.id !== null) {
-      let formData = new FormData();
-      formData.append('idUser', this.id);
-      formData.append('mail', this.registerForm.get('mail')?.value);
-      formData.append('dni', this.registerForm.get('dni')?.value);
-      formData.append('firstName', this.registerForm.get('firstName')?.value);
-      formData.append('surName', this.registerForm.get('surName')?.value);
-      formData.append('password', this.registerForm.get('password')?.value);
-      formData.append('birthDate', this.registerForm.get('birthDate')?.value);
-      formData.append('gender', this.registerForm.get('gender')?.value);
+      console.log(this.id);
+      let newUserData = {
+        idUser: this.id,
+        mail: this.registerForm.get('mail')?.value,
+        dni: this.registerForm.get('dni')?.value,
+        firstName: this.registerForm.get('firstName')?.value,
+        surName: this.registerForm.get('surName')?.value,
+        password: this.registerForm.get('password')?.value,
+        birthDate: this.registerForm.get('birthDate')?.value,
+        gender: this.registerForm.get('gender')?.value === 'true',
+      };
 
-      this._userService.updateUser(formData).subscribe(
+      this._userService.updateUser(newUserData).subscribe(
         (data) => {
-          this.toastr.info(
-            'El estudiante fue actualizado con exito',
-            'Estudiante actualizado!'
-          );
-          this.showTable = true;
-          this.showForm = false;
-          this.router.navigate(['dashboard/' + this.id]);
+          console.log(data)
+          if (data.success == true) {
+            this.toastr.info(
+              'El usuario fue actualizado con exito',
+              'Usuario actualizado!'
+            );
+            this.showTable = true;
+            this.showForm = false;
+            this.router.navigate(['dashboard/' + this.id]);
+          } else {
+            this.toastr.error('Opss ocurrio un error', 'Error');
+          }
         },
         (error) => {
           this.toastr.error('Opss ocurrio un error', 'Error');

@@ -27,10 +27,8 @@
         "
         >Regístrate</a
       >
-      <span class="ml-3 text-light" style="margin-right: 15px;">
-        {{
-          (user?.firstName || '').toUpperCase()
-        }}
+      <span class="ml-3 text-light" style="margin-right: 15px">
+        {{ (user?.firstName || "").toUpperCase() }}
       </span>
 
       <div class="dropdown" (click)="toggleMenu()">
@@ -45,7 +43,7 @@
           *ngIf="isMenuOpen"
           [ngClass]="{ 'dropdown-menu-show': isMenuOpen }"
         >
-          <a class="dropdown-item" href="/login"
+          <a class="dropdown-item" (click)="logout()"
             ><i class="fas fa-sign-out-alt"></i> Salir</a
           >
         </div>

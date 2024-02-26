@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Login } from 'src/app/interfaces/Login';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,6 @@ import { Login } from 'src/app/interfaces/Login';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  public static token: string;
   accessLogin: FormGroup;
   login: Login | undefined;
 
@@ -47,21 +47,32 @@ export class LoginComponent {
 
         this._userService.postLogin(login).subscribe(
           (data) => {
-            LoginComponent.token = data.token;
-            this.toastr.success('¡Bienvenido!', 'Acceso');
-            this.router.navigate(['/dashboard', data.idUser]);
+            if (data.success == true) {
+              localStorage.setItem('token', data.value);
+
+              const decodedToken: any = jwtDecode(data.value);
+
+              const userId: string = decodedToken.unique_name;
+
+              this.toastr.success('¡Bienvenido!', 'Acceso');
+              this.router.navigate(['/dashboard', userId]);
+            }else{
+              this.toastr.error('Crea una cuenta, es muy fácil', 'No permitido!');
+            }
           },
           (error) => {
-            this.toastr.error('Crea una cuenta', 'Error');
+            this.toastr.error('Opss ocurrio un error', 'Error');
             console.log(error);
           }
         );
       } else {
-        this.toastr.error('Por favor, utiliza una dirección de correo electrónico de Gmail', 'Error');
+        this.toastr.error(
+          'Por favor, utiliza una dirección de correo electrónico de Gmail',
+          'Error'
+        );
       }
     }
   }
-
 
   // ---------------------------------------------------- VER O NO PASSWORD
   togglePasswordVisibility(): void {

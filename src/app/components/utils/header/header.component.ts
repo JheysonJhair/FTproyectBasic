@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/interfaces/User';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -16,7 +16,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
-    private aRoute: ActivatedRoute
+    private aRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.id = this.aRoute.snapshot.paramMap.get('idLogin')!;
   }
@@ -28,8 +29,15 @@ export class HeaderComponent implements OnInit {
   // ---------------------------------------------------- GET USER
   getUserById(id: string) {
     this._userService.getUserById(id).subscribe((data) => {
-      this.user = data.dtoUser;
+      this.user = data.value;
     });
+  }
+
+  // ---------------------------------------------------- LOGOUT
+  logout() {
+    localStorage.removeItem('token');
+    console.log('Token eliminado en localStorage:');
+    this.router.navigate(['/login']);
   }
 
   // ---------------------------------------------------- EXTRA

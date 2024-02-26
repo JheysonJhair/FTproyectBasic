@@ -36,8 +36,8 @@
           <tbody>
             <tr *ngFor="let user of listUsers">
               <td>{{ user.dni }}</td>
-              <td>{{ user.firstName }}</td>
-              <td>{{ user.surName }}</td>
+              <td>{{ user.firstName | titlecase }}</td>
+              <td>{{ user.surName | titlecase }}</td>
               <td>{{ user.mail }}</td>
               <td>{{ user.gender ? "Masculino" : "Femenino" }}</td>
 
