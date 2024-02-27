@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit {
 
   showTable: boolean = true;
   showForm: boolean = false;
+  hidePassword: boolean = true;
 
   listUsers: User[] = [];
   constructor(
@@ -110,7 +111,7 @@ export class UsersComponent implements OnInit {
             data.value.firstName
           );
           this.registerForm.controls['surName'].setValue(data.value.surName);
-          this.registerForm.controls['password'].setValue('');
+          this.registerForm.controls['password'].setValue(data.value.password);
           this.registerForm.controls['birthDate'].setValue(formattedBirthDate);
           this.registerForm.controls['gender'].setValue(data.value.gender);
         },
@@ -202,6 +203,16 @@ export class UsersComponent implements OnInit {
   }
 
   //--------------------------------------------------------------- EXTRA
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+    const passwordField = document.getElementById('inputChoosePassword');
+    if (passwordField) {
+      passwordField.setAttribute(
+        'type',
+        this.hidePassword ? 'password' : 'text'
+      );
+    }
+  }
 
   registerUser(): void {
     this.showTable = false;
@@ -218,7 +229,6 @@ export class UsersComponent implements OnInit {
     let month = (today.getMonth() + 1).toString();
     let day = today.getDate().toString();
 
-    // Añadir un cero inicial si el mes o el día son menores que 10
     if (month.length < 2) {
       month = '0' + month;
     }
@@ -228,5 +238,4 @@ export class UsersComponent implements OnInit {
 
     return `${year}-${month}-${day}`;
   }
-
 }

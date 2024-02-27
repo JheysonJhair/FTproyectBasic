@@ -36,7 +36,13 @@
           <tbody>
             <tr *ngFor="let user of listUsers">
               <td>
-                <a style=" text-decoration: none; font-weight: bold;" [routerLink]="'/dashboard/'+idLogin+'/information/' + user.idUser">{{ user.dni }}</a>
+                <a
+                  style="text-decoration: none; font-weight: bold"
+                  [routerLink]="
+                    '/dashboard/' + idLogin + '/information/' + user.idUser
+                  "
+                  >{{ user.dni }}</a
+                >
               </td>
               <td>{{ user.firstName | titlecase }}</td>
               <td>{{ user.surName | titlecase }}</td>
@@ -124,18 +130,32 @@
               style="font-weight: bold"
               >Contraseña</label
             >
-            <input
-              type="password"
-              class="form-control"
-              id="inputChoosePassword"
-              placeholder="Tú contraseña"
-              formControlName="password"
-              [ngClass]="{
-                'is-invalid':
-                  registerForm.get('password')?.invalid &&
-                  registerForm.get('password')?.touched
-              }"
-            />
+            <div class="input-group" id="show_hide_password">
+              <input
+                type="password"
+                class="form-control"
+                id="inputChoosePassword"
+                placeholder="Tú contraseña"
+                formControlName="password"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('password')?.invalid &&
+                    registerForm.get('password')?.touched
+                }"
+              />
+              <button
+                class="btn btn-outline-secondary input-group-text"
+                type="button"
+                id="togglePassword"
+                (click)="togglePasswordVisibility()"
+                style="background-color: #203056; cursor: pointer"
+              >
+                <i
+                  class="fas"
+                  [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'"
+                ></i>
+              </button>
+            </div>
             <div
               *ngIf="registerForm.get('password')?.invalid"
               class="invalid-feedback"
@@ -257,17 +277,17 @@
               >Fecha de nacimiento</label
             >
             <input
-            type="date"
-            class="form-control"
-            id="inputBirthDate"
-            formControlName="birthDate"
-            [ngClass]="{
-              'is-invalid':
-                registerForm.get('birthDate')?.invalid &&
-                registerForm.get('birthDate')?.touched
-            }"
-            max="{{ getMaxDate() }}"
-          />
+              type="date"
+              class="form-control"
+              id="inputBirthDate"
+              formControlName="birthDate"
+              [ngClass]="{
+                'is-invalid':
+                  registerForm.get('birthDate')?.invalid &&
+                  registerForm.get('birthDate')?.touched
+              }"
+              max="{{ getMaxDate() }}"
+            />
 
             <div
               *ngIf="registerForm.get('birthDate')?.invalid"
