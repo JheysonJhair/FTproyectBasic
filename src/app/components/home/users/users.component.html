@@ -36,7 +36,7 @@
           <tbody>
             <tr *ngFor="let user of listUsers">
               <td>
-                <a style=" text-decoration: none; font-weight: bold;" [routerLink]="'/information/' + user.idUser">{{ user.dni }}</a>
+                <a style=" text-decoration: none; font-weight: bold;" [routerLink]="'/dashboard/'+idLogin+'/information/' + user.idUser">{{ user.dni }}</a>
               </td>
               <td>{{ user.firstName | titlecase }}</td>
               <td>{{ user.surName | titlecase }}</td>
