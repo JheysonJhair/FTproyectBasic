@@ -144,6 +144,7 @@
                       registerForm.get('birthDate')?.invalid &&
                       registerForm.get('birthDate')?.touched
                   }"
+                  max="{{ getMaxDate() }}"
                 />
                 <div
                   *ngIf="registerForm.get('birthDate')?.invalid"

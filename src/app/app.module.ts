@@ -15,6 +15,7 @@ import { UsersComponent } from './components/home/users/users.component';
 import { HeaderComponent } from './components/utils/header/header.component';
 import { FooterComponent } from './components/utils/footer/footer.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { SeeuserComponent } from './components/see/seeuser/seeuser.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
     UsersComponent,
     HeaderComponent,
     FooterComponent,
+    SeeuserComponent,
 
   ],
   imports: [

@@ -211,4 +211,22 @@ export class UsersComponent implements OnInit {
   reloadPage(): void {
     window.location.reload();
   }
+
+  getMaxDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = (today.getMonth() + 1).toString();
+    let day = today.getDate().toString();
+
+    // Añadir un cero inicial si el mes o el día son menores que 10
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+
+    return `${year}-${month}-${day}`;
+  }
+
 }

@@ -35,7 +35,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of listUsers">
-              <td>{{ user.dni }}</td>
+              <td>
+                <a style=" text-decoration: none; font-weight: bold;" [routerLink]="'/information/' + user.idUser">{{ user.dni }}</a>
+              </td>
               <td>{{ user.firstName | titlecase }}</td>
               <td>{{ user.surName | titlecase }}</td>
               <td>{{ user.mail }}</td>
@@ -255,16 +257,18 @@
               >Fecha de nacimiento</label
             >
             <input
-              type="date"
-              class="form-control"
-              id="inputBirthDate"
-              formControlName="birthDate"
-              [ngClass]="{
-                'is-invalid':
-                  registerForm.get('birthDate')?.invalid &&
-                  registerForm.get('birthDate')?.touched
-              }"
-            />
+            type="date"
+            class="form-control"
+            id="inputBirthDate"
+            formControlName="birthDate"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('birthDate')?.invalid &&
+                registerForm.get('birthDate')?.touched
+            }"
+            max="{{ getMaxDate() }}"
+          />
+
             <div
               *ngIf="registerForm.get('birthDate')?.invalid"
               class="invalid-feedback"
